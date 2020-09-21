@@ -30,21 +30,45 @@ public class ControlPanel extends AppCompatActivity implements Bluetooth.Communi
     private Button send;
     private TextView text;
     private ScrollView scrollView;
+
+    private TextView rReady;
+    private TextView rLimit;
+    private TextView rMotion;
+    private TextView rAnglePOT;
+    private TextView rFrontFSR;
+    private TextView rBackFSR;
+
+    private TextView lReady;
+    private TextView lLimit;
+    private TextView lMotion;
+    private TextView lAnglePOT;
+    private TextView lFrontFSR;
+    private TextView lBackFSR;
+
     private boolean registered = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.control_panel);
 
-        text = (TextView) findViewById(R.id.text);
-        message = (EditText) findViewById(R.id.message);
-        send = (Button) findViewById(R.id.send);
-        scrollView = (ScrollView) findViewById(R.id.scrollView);
+        // Right
+        rReady = (TextView) findViewById(R.id.textViewRReady);
+        rLimit = (TextView) findViewById(R.id.textViewRLimit);
+        rMotion = (TextView) findViewById(R.id.textViewRMotion);
+        rAnglePOT = (TextView) findViewById(R.id.textViewRAnglePOT);
+        rFrontFSR = (TextView) findViewById(R.id.textViewRFrontFSR);
+        rBackFSR = (TextView) findViewById(R.id.textViewRBackFSR);
 
-        text.setMovementMethod(new ScrollingMovementMethod());
-        send.setEnabled(false);
+        // Left
+        lReady = (TextView) findViewById(R.id.textViewLReady);
+        lLimit = (TextView) findViewById(R.id.textViewLLimit);
+        lMotion = (TextView) findViewById(R.id.textViewLMotion);
+        lAnglePOT = (TextView) findViewById(R.id.textViewLAnglePOT);
+        lFrontFSR = (TextView) findViewById(R.id.textViewLFrontFSR);
+        lBackFSR = (TextView) findViewById(R.id.textViewLBackFSR);
 
+        lReady.setText("00");
         b = new Bluetooth(this);
         b.enableBluetooth();
 
@@ -55,16 +79,6 @@ public class ControlPanel extends AppCompatActivity implements Bluetooth.Communi
 
         Display("Connecting...");
         b.connectToDevice(b.getPairedDevices().get(pos));
-
-        send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String msg = message.getText().toString();
-                message.setText("");
-                b.send(msg);
-                Display("You: " + msg);
-            }
-        });
 
         IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
         registerReceiver(mReceiver, filter);
@@ -99,6 +113,12 @@ public class ControlPanel extends AppCompatActivity implements Bluetooth.Communi
                 finish();
                 return true;
 
+            case R.id.switchPages:
+                intent = new Intent(this, Chat.class);
+                startActivity(intent);
+                finish();
+                return true;
+
             case R.id.rate:
                 Uri uri = Uri.parse("market://details?id=" + this.getPackageName());
                 Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
@@ -119,8 +139,9 @@ public class ControlPanel extends AppCompatActivity implements Bluetooth.Communi
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                text.append(s + "\n");
-                scrollView.fullScroll(View.FOCUS_DOWN);
+                lReady.setText(s);
+//                text.append(s + "\n");
+//                scrollView.fullScroll(View.FOCUS_DOWN);
             }
         });
     }

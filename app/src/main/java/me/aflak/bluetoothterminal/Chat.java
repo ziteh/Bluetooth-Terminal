@@ -30,16 +30,16 @@ public class Chat extends AppCompatActivity implements Bluetooth.CommunicationCa
     private Button send;
     private TextView text;
     private ScrollView scrollView;
-    private boolean registered=false;
+    private boolean registered = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        text = (TextView)findViewById(R.id.text);
-        message = (EditText)findViewById(R.id.message);
-        send = (Button)findViewById(R.id.send);
+        text = (TextView) findViewById(R.id.text);
+        message = (EditText) findViewById(R.id.message);
+        send = (Button) findViewById(R.id.send);
         scrollView = (ScrollView) findViewById(R.id.scrollView);
 
         text.setMovementMethod(new ScrollingMovementMethod());
@@ -62,21 +62,21 @@ public class Chat extends AppCompatActivity implements Bluetooth.CommunicationCa
                 String msg = message.getText().toString();
                 message.setText("");
                 b.send(msg);
-                Display("You: "+msg);
+                Display("You: " + msg);
             }
         });
 
         IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
         registerReceiver(mReceiver, filter);
-        registered=true;
+        registered = true;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(registered) {
+        if (registered) {
             unregisterReceiver(mReceiver);
-            registered=false;
+            registered = false;
         }
     }
 
@@ -99,6 +99,12 @@ public class Chat extends AppCompatActivity implements Bluetooth.CommunicationCa
                 finish();
                 return true;
 
+            case R.id.switchPages:
+                intent = new Intent(this, ControlPanel.class);
+                startActivity(intent);
+                finish();
+                return true;
+
             case R.id.rate:
                 Uri uri = Uri.parse("market://details?id=" + this.getPackageName());
                 Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
@@ -115,7 +121,7 @@ public class Chat extends AppCompatActivity implements Bluetooth.CommunicationCa
         }
     }
 
-    public void Display(final String s){
+    public void Display(final String s) {
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -127,7 +133,7 @@ public class Chat extends AppCompatActivity implements Bluetooth.CommunicationCa
 
     @Override
     public void onConnect(BluetoothDevice device) {
-        Display("Connected to "+device.getName()+" - "+device.getAddress());
+        Display("Connected to " + device.getName() + " - " + device.getAddress());
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -145,17 +151,17 @@ public class Chat extends AppCompatActivity implements Bluetooth.CommunicationCa
 
     @Override
     public void onMessage(String message) {
-        Display(name+": "+message);
+        Display(name + ": " + message);
     }
 
     @Override
     public void onError(String message) {
-        Display("Error: "+message);
+        Display("Error: " + message);
     }
 
     @Override
     public void onConnectError(final BluetoothDevice device, String message) {
-        Display("Error: "+message);
+        Display("Error: " + message);
         Display("Trying again in 3 sec.");
         runOnUiThread(new Runnable() {
             @Override
@@ -182,17 +188,17 @@ public class Chat extends AppCompatActivity implements Bluetooth.CommunicationCa
 
                 switch (state) {
                     case BluetoothAdapter.STATE_OFF:
-                        if(registered) {
+                        if (registered) {
                             unregisterReceiver(mReceiver);
-                            registered=false;
+                            registered = false;
                         }
                         startActivity(intent1);
                         finish();
                         break;
                     case BluetoothAdapter.STATE_TURNING_OFF:
-                        if(registered) {
+                        if (registered) {
                             unregisterReceiver(mReceiver);
-                            registered=false;
+                            registered = false;
                         }
                         startActivity(intent1);
                         finish();

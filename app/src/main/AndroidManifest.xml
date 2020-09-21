@@ -10,7 +10,7 @@
 
         <activity
             android:name=".ControlPanel"
-            android:label="@string/app_name"
+            android:label="@string/control_page"
             android:screenOrientation="portrait">
         </activity>
 
