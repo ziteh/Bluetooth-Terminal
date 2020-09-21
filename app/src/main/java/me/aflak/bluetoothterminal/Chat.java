@@ -26,24 +26,57 @@ import me.aflak.bluetooth.Bluetooth;
 public class Chat extends AppCompatActivity implements Bluetooth.CommunicationCallback {
     private String name;
     private Bluetooth b;
-    private EditText message;
-    private Button send;
-    private TextView text;
-    private ScrollView scrollView;
+    //    private EditText message;
+//    private Button send;
+//    private TextView text;
+//    private ScrollView scrollView;
     private boolean registered = false;
+
+    private TextView rReady;
+    private TextView rLimit;
+    private TextView rMotion;
+    private TextView rAnglePOT;
+    private TextView rFrontFSR;
+    private TextView rBackFSR;
+
+    private TextView lReady;
+    private TextView lLimit;
+    private TextView lMotion;
+    private TextView lAnglePOT;
+    private TextView lFrontFSR;
+    private TextView lBackFSR;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+//        setContentView(R.layout.activity_main);
+        setContentView(R.layout.control_panel);
 
-        text = (TextView) findViewById(R.id.text);
-        message = (EditText) findViewById(R.id.message);
-        send = (Button) findViewById(R.id.send);
-        scrollView = (ScrollView) findViewById(R.id.scrollView);
+        // Right
+        rReady = (TextView) findViewById(R.id.textViewRReady);
+        rLimit = (TextView) findViewById(R.id.textViewRLimit);
+        rMotion = (TextView) findViewById(R.id.textViewRMotion);
+        rAnglePOT = (TextView) findViewById(R.id.textViewRAnglePOT);
+        rFrontFSR = (TextView) findViewById(R.id.textViewRFrontFSR);
+        rBackFSR = (TextView) findViewById(R.id.textViewRBackFSR);
 
-        text.setMovementMethod(new ScrollingMovementMethod());
-        send.setEnabled(false);
+        // Left
+        lReady = (TextView) findViewById(R.id.textViewLReady);
+        lLimit = (TextView) findViewById(R.id.textViewLLimit);
+        lMotion = (TextView) findViewById(R.id.textViewLMotion);
+        lAnglePOT = (TextView) findViewById(R.id.textViewLAnglePOT);
+        lFrontFSR = (TextView) findViewById(R.id.textViewLFrontFSR);
+        lBackFSR = (TextView) findViewById(R.id.textViewLBackFSR);
+
+        lReady.setText("00");
+
+//        text = (TextView) findViewById(R.id.text);
+//        message = (EditText) findViewById(R.id.message);
+//        send = (Button) findViewById(R.id.send);
+//        scrollView = (ScrollView) findViewById(R.id.scrollView);
+//
+//        text.setMovementMethod(new ScrollingMovementMethod());
+//        send.setEnabled(false);
 
         b = new Bluetooth(this);
         b.enableBluetooth();
@@ -56,15 +89,15 @@ public class Chat extends AppCompatActivity implements Bluetooth.CommunicationCa
         Display("Connecting...");
         b.connectToDevice(b.getPairedDevices().get(pos));
 
-        send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String msg = message.getText().toString();
-                message.setText("");
-                b.send(msg);
-                Display("You: " + msg);
-            }
-        });
+//        send.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String msg = message.getText().toString();
+//                message.setText("");
+//                b.send(msg);
+//                Display("You: " + msg);
+//            }
+//        });
 
         IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
         registerReceiver(mReceiver, filter);
@@ -125,8 +158,101 @@ public class Chat extends AppCompatActivity implements Bluetooth.CommunicationCa
         this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                text.append(s + "\n");
-                scrollView.fullScroll(View.FOCUS_DOWN);
+//                lReady.setText(s);
+                String[] data = s.split(",");
+                if (data.length == 15) {
+                    switch (data[1]) {
+                        case "1":
+                            rReady.setText("Ready");
+                            break;
+
+                        case "0":
+                        default:
+                            rReady.setText("Faule");
+                            break;
+                    }
+
+                    switch (data[2]) {
+                        case "0":
+                            rLimit.setText("Unlimited");
+                            break;
+
+                        case "1":
+                            rLimit.setText("Full Extension");
+                            break;
+
+                        case "2":
+                            rLimit.setText("Full Flexion");
+                            break;
+
+                        default:
+                            rLimit.setText("?");
+                            break;
+                    }
+
+                    switch (data[3]) {
+                        case "1":
+                            rMotion.setText("Extensioning");
+                            break;
+
+                        case "2":
+                            rMotion.setText("Flexioning");
+                            break;
+
+                        default:
+                            rMotion.setText("Not in motion");
+                            break;
+                    }
+                    rAnglePOT.setText(data[4]);
+                    rFrontFSR.setText(data[5]);
+                    rBackFSR.setText(data[6]);
+
+                    switch (data[8]) {
+                        case "1":
+                            lReady.setText("Ready");
+                            break;
+
+                        case "0":
+                        default:
+                            lReady.setText("Faule");
+                            break;
+                    }
+
+                    switch (data[9]) {
+                        case "0":
+                            lLimit.setText("Unlimited");
+                            break;
+
+                        case "1":
+                            lLimit.setText("Full Extension");
+                            break;
+
+                        case "2":
+                            lLimit.setText("Full Flexion");
+                            break;
+
+                        default:
+                            lLimit.setText("?");
+                            break;
+                    }
+
+                    switch (data[10]) {
+                        case "1":
+                            lMotion.setText("Extensioning");
+                            break;
+
+                        case "2":
+                            lMotion.setText("Flexioning");
+                            break;
+
+                        default:
+                            lMotion.setText("Not in motion");
+                            break;
+                    }
+                    lAnglePOT.setText(data[11]);
+                    lFrontFSR.setText(data[12]);
+                    lBackFSR.setText(data[13]);
+                }
             }
         });
     }
@@ -134,12 +260,12 @@ public class Chat extends AppCompatActivity implements Bluetooth.CommunicationCa
     @Override
     public void onConnect(BluetoothDevice device) {
         Display("Connected to " + device.getName() + " - " + device.getAddress());
-        this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                send.setEnabled(true);
-            }
-        });
+//        this.runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                send.setEnabled(true);
+//            }
+//        });
     }
 
     @Override
@@ -151,7 +277,7 @@ public class Chat extends AppCompatActivity implements Bluetooth.CommunicationCa
 
     @Override
     public void onMessage(String message) {
-        Display(name + ": " + message);
+        Display(message);
     }
 
     @Override
