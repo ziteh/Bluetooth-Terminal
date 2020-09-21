@@ -168,7 +168,7 @@ public class Chat extends AppCompatActivity implements Bluetooth.CommunicationCa
 
                         case "0":
                         default:
-                            rReady.setText("Faule");
+                            rReady.setText("Fault");
                             break;
                     }
 
@@ -214,7 +214,7 @@ public class Chat extends AppCompatActivity implements Bluetooth.CommunicationCa
 
                         case "0":
                         default:
-                            lReady.setText("Faule");
+                            lReady.setText("Fault");
                             break;
                     }
 
