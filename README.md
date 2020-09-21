@@ -1,7 +1,10 @@
-# Bluetooth-Terminal
-Source code of my application "Bluetooth Terminal" on the playstore.
+# L.E.A.P control Panel Android APP (Bluetooth-Terminal)
 
-https://play.google.com/store/apps/details?id=me.aflak.bluetoothterminal
+L.E.A.P（飛躍）是我的大學畢業專題（Graduation independent study）
+其全名為：輔助性動力輕型外骨骼（Lightweight Exoskeleton with Assistive Power）
+
+這個repo儲存的是L.E.A.P的Android端控制程式。
+Forked from [OmarAflak/Bluetooth-Terminal](https://github.com/OmarAflak/Bluetooth-Terminal)
 
 # Bluetooth library
 

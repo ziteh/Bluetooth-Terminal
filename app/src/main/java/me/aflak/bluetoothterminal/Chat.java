@@ -68,7 +68,7 @@ public class Chat extends AppCompatActivity implements Bluetooth.CommunicationCa
         lFrontFSR = (TextView) findViewById(R.id.textViewLFrontFSR);
         lBackFSR = (TextView) findViewById(R.id.textViewLBackFSR);
 
-        lReady.setText("00");
+        lReady.setText("0⚠0");
 
 //        text = (TextView) findViewById(R.id.text);
 //        message = (EditText) findViewById(R.id.message);
@@ -168,7 +168,7 @@ public class Chat extends AppCompatActivity implements Bluetooth.CommunicationCa
 
                         case "0":
                         default:
-                            rReady.setText("Fault");
+                            rReady.setText("⚠Fault");
                             break;
                     }
 
@@ -214,7 +214,7 @@ public class Chat extends AppCompatActivity implements Bluetooth.CommunicationCa
 
                         case "0":
                         default:
-                            lReady.setText("Fault");
+                            lReady.setText("⚠Fault");
                             break;
                     }
 
