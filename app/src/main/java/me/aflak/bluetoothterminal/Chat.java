@@ -93,7 +93,7 @@ public class Chat extends AppCompatActivity implements Bluetooth.CommunicationCa
         int pos = getIntent().getExtras().getInt("pos");
         name = b.getPairedDevices().get(pos).getName();
 
-        Toast.makeText(getApplicationContext(), "Connecting...", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "Connecting...", Toast.LENGTH_SHORT).show();
         b.connectToDevice(b.getPairedDevices().get(pos));
 
         reset.setOnClickListener(new View.OnClickListener() {
@@ -273,6 +273,8 @@ public class Chat extends AppCompatActivity implements Bluetooth.CommunicationCa
                     lAnglePOT.setText(data[11]);
                     lFrontFSR.setText(data[12]);
                     lBackFSR.setText(data[13]);
+                } else {
+                    Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
                 }
             }
         });
