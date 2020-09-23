@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import me.aflak.bluetooth.Bluetooth;
 
@@ -46,6 +47,9 @@ public class Chat extends AppCompatActivity implements Bluetooth.CommunicationCa
     private TextView lFrontFSR;
     private TextView lBackFSR;
 
+    private Button reset;
+    private Button stop;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +72,10 @@ public class Chat extends AppCompatActivity implements Bluetooth.CommunicationCa
         lFrontFSR = (TextView) findViewById(R.id.textViewLFrontFSR);
         lBackFSR = (TextView) findViewById(R.id.textViewLBackFSR);
 
-        lReady.setText("0⚠0");
+        reset = (Button) findViewById(R.id.buttonReset);
+        stop = (Button) findViewById(R.id.buttonStop);
+
+        lReady.setText("wait...");
 
 //        text = (TextView) findViewById(R.id.text);
 //        message = (EditText) findViewById(R.id.message);
@@ -86,8 +93,22 @@ public class Chat extends AppCompatActivity implements Bluetooth.CommunicationCa
         int pos = getIntent().getExtras().getInt("pos");
         name = b.getPairedDevices().get(pos).getName();
 
-        Display("Connecting...");
+        Toast.makeText(getApplicationContext(), "Connecting...", Toast.LENGTH_LONG).show();
         b.connectToDevice(b.getPairedDevices().get(pos));
+
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                b.send("R");
+            }
+        });
+
+        stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                b.send("S");
+            }
+        });
 
 //        send.setOnClickListener(new View.OnClickListener() {
 //            @Override
