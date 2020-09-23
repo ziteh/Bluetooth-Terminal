@@ -113,11 +113,11 @@ public class ControlPanel extends AppCompatActivity implements Bluetooth.Communi
                 finish();
                 return true;
 
-            case R.id.switchPages:
-                intent = new Intent(this, Chat.class);
-                startActivity(intent);
-                finish();
-                return true;
+//            case R.id.switchPages:
+//                intent = new Intent(this, Chat.class);
+//                startActivity(intent);
+//                finish();
+//                return true;
 
             case R.id.rate:
                 Uri uri = Uri.parse("market://details?id=" + this.getPackageName());

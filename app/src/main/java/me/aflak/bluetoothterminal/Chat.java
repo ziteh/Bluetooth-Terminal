@@ -153,11 +153,11 @@ public class Chat extends AppCompatActivity implements Bluetooth.CommunicationCa
                 finish();
                 return true;
 
-            case R.id.switchPages:
-                intent = new Intent(this, ControlPanel.class);
-                startActivity(intent);
-                finish();
-                return true;
+//            case R.id.switchPages:
+//                intent = new Intent(this, ControlPanel.class);
+//                startActivity(intent);
+//                finish();
+//                return true;
 
             case R.id.rate:
                 Uri uri = Uri.parse("market://details?id=" + this.getPackageName());
